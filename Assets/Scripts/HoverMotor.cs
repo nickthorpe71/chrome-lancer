@@ -18,7 +18,7 @@ public class HoverMotor : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
             powerInput = 1;
         }
@@ -30,6 +30,16 @@ public class HoverMotor : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        Ray ray = new Ray(transform.position, -transform.up);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, hoverHeight))
+        {
+            float proportionalHeight = (hoverHeight - hit.distance) / hoverHeight;
+            Vector3 appliedHoverForce = Vector3.up * proportionalHeight * hoverForce;
+            bikeRigidbody.AddForce(appliedHoverForce, ForceMode.Acceleration); //ForceMode.Acceleration ignores mass of the bike
+        }
+
+        bikeRigidbody.AddRelativeForce(powerInput * speed, 0f, 0f);
     }
 }
