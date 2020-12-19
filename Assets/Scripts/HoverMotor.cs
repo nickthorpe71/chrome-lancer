@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HoverMotor : MonoBehaviour
 {
-    public float speed = 90f;
-    public float hoverForce = 65f;
+    public float speed = 110f;
+    public float hoverForce = 165f;
     public float hoverHeight = 3.5f;
 
-    private float powerInput;
+    private float powerInput = 1;
     private Rigidbody bikeRigidbody;
 
     private void Awake()
@@ -16,17 +16,17 @@ public class HoverMotor : MonoBehaviour
         bikeRigidbody = GetComponent<Rigidbody>();
     }
 
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            powerInput = 1;
-        }
-        else
-        {
-            powerInput = 0;
-        }
-    }
+    //void Update()
+    //{
+    //    if (Input.GetKey(KeyCode.Space))
+    //    {
+    //        powerInput = 1;
+    //    }
+    //    else
+    //    {
+    //        powerInput = 0;
+    //    }
+    //}
 
     private void FixedUpdate()
     {
