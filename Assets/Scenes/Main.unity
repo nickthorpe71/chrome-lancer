@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63bde18d245f94064b3ac89e5d83ec10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 90
+  speed: 50
   hoverForce: 65
   hoverHeight: 3.5
 --- !u!1 &506740099
@@ -2034,7 +2034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63bde18d245f94064b3ac89e5d83ec10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 110
+  speed: 50
   hoverForce: 65
   hoverHeight: 3.5
 --- !u!65 &1786350023
