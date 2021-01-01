@@ -18,6 +18,7 @@ public class GameLogic : MonoBehaviour
     public Text overheadText;
     public Text player1TimeDisplay;
     public Text player2TimeDisplay;
+    public GameObject toMainButton;
 
     public GameObject player1;
     public GameObject player2;
@@ -56,7 +57,7 @@ public class GameLogic : MonoBehaviour
         charAnimController.SetP1Idle();
         charAnimController.SetP2Idle();
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
         overheadText.text = "3";
 
         yield return new WaitForSeconds(1);
@@ -100,7 +101,7 @@ public class GameLogic : MonoBehaviour
         charAnimController.StopP2Running();
 
         yield return new WaitForSeconds(1);
-        DisplaySpeedResults();
+        DisplayFinalResults();
     }
 
     void OnButtonPress()
@@ -117,7 +118,7 @@ public class GameLogic : MonoBehaviour
         overheadText.text = "";
     }
 
-    void DisplaySpeedResults()
+    void DisplayFinalResults()
     {
         player1TimeDisplay.text = "P1 " + player1Time.ToString();
         player2TimeDisplay.text = "P2 " + player2Time.ToString();
@@ -128,6 +129,8 @@ public class GameLogic : MonoBehaviour
             overheadText.text = "Player 2 wins";
         else
             overheadText.text = "DRAW";
+
+        toMainButton.SetActive(true);
     }
 
     void PlayEndAnimations()
