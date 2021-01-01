@@ -46,7 +46,7 @@ public class GameLogic : MonoBehaviour
         {
             canInput = false;
             // if player presses before action timer starts then restart match / default
-            player1Time = Mathf.Round(Time.timeSinceLevelLoad - actionStartTime);
+            player1Time = Mathf.Round((Time.timeSinceLevelLoad - actionStartTime) * 100f);
             StartCoroutine(PostButtonPress());
         }
     }
@@ -93,6 +93,11 @@ public class GameLogic : MonoBehaviour
 
         yield return new WaitForSeconds(3);
         PlayEndAnimations();
+
+        yield return new WaitForSeconds(0.2f);
+        PlayEndAnimations();
+        charAnimController.StopP1Running();
+        charAnimController.StopP2Running();
 
         yield return new WaitForSeconds(1);
         DisplaySpeedResults();
