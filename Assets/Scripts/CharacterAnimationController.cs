@@ -98,12 +98,21 @@ public class CharacterAnimationController : MonoBehaviour
 	public void P1Die()
     {
 		p1Animator.SetInteger("moving", 14);
+		StartCoroutine(SwitchAnimationAfterDeath());
 	}
 
 	public void P2Die()
 	{
 		p2Animator.SetInteger("moving", 14);
+		StartCoroutine(SwitchAnimationAfterDeath());
 	}
+
+	IEnumerator SwitchAnimationAfterDeath()
+    {
+		yield return new WaitForSeconds(0.5f);
+		StopP1Running();
+		StopP2Running();
+    }
 
 	public void P1RandomAttack()
     {

@@ -14,6 +14,7 @@ public class GameLogic : MonoBehaviour
     private float actionTime;
 
     private bool canInput;
+    private bool inputReceived;
 
     public Text overheadText;
     public Text player1TimeDisplay;
@@ -43,9 +44,8 @@ public class GameLogic : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && canInput)
+        if(Input.GetKeyDown(KeyCode.Space) && !inputReceived && canInput)
         {
-            canInput = false;
             // if player presses before action timer starts then restart match / default
             player1Time = Mathf.Round((Time.timeSinceLevelLoad - actionStartTime) * 100f);
             StartCoroutine(PostButtonPress());
@@ -70,10 +70,11 @@ public class GameLogic : MonoBehaviour
         charAnimController.SetP1CombatIdle();
         charAnimController.SetP2CombatIdle();
         overheadText.text = "";
+        canInput = true;
 
         yield return new WaitForSeconds(actionTime);
         overheadText.text = "!";
-        canInput = true;
+
         characterMovement.MoveToEndPosition();
         charAnimController.StartP1Running();
         charAnimController.StartP2Running();
@@ -95,17 +96,20 @@ public class GameLogic : MonoBehaviour
         yield return new WaitForSeconds(3);
         PlayEndAnimations();
 
-        yield return new WaitForSeconds(0.2f);
-        PlayEndAnimations();
-        charAnimController.StopP1Running();
-        charAnimController.StopP2Running();
-
         yield return new WaitForSeconds(1);
-        DisplayFinalResults();
+        DisplayFinalResults(false);
     }
 
     void OnButtonPress()
     {
+        inputReceived = true;
+
+        if (!canInput)
+        {
+            FalseStart();
+            return;
+        }
+
         if (player1Time == player2Time)
         {
             finalVerdict = EndState.DRAW;
@@ -116,13 +120,27 @@ public class GameLogic : MonoBehaviour
             finalVerdict = EndState.P2WIN;
 
         overheadText.text = "";
+        canInput = false;
     }
 
-    void DisplayFinalResults()
+    void FalseStart()
     {
-        player1TimeDisplay.text = "P1 " + player1Time.ToString();
-        player2TimeDisplay.text = "P2 " + player2Time.ToString();
+        StopAllCoroutines();
+        overheadText.text = "You acted too soon!";
+        finalVerdict = EndState.P2WIN;
+        characterMovement.StopMovement();
+        PlayEndAnimations();
+        DisplayFinalResults(true);
+    }
 
+    void DisplayFinalResults(bool falseStart = false)
+    {
+        if (!falseStart)
+        {
+            player1TimeDisplay.text = "P1 " + player1Time.ToString();
+            player2TimeDisplay.text = "P2 " + player2Time.ToString();
+        }
+        
         if (finalVerdict == EndState.P1WIN)
             overheadText.text = "Player 1 wins";
         else if(finalVerdict == EndState.P2WIN)
